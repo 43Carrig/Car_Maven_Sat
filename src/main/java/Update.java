@@ -13,14 +13,18 @@ public class Update extends JFrame {
     private JTextField registrationtextField;
     private JLabel before;
     private JLabel after;
+    private JTextField revtextField;
     private final static List<Car> data = new ArrayList<>();
 
     public Update() {
+        before.setText(String.valueOf(CouchCRUD.listAllDocs()));
+
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                CouchCRUD.putCarDetails(idtextField.getText(), registrationtextField.getText(), Boolean.valueOf(isSoldtextField.getText()));
+                CouchCRUD.putCarDetails(idtextField.getText(), revtextField.getText(),registrationtextField.getText(), Boolean.valueOf(isSoldtextField.getText()));
+                after.setText(String.valueOf(CouchCRUD.listAllDocs()));
             }
         });
     }

@@ -47,24 +47,6 @@ public class CouchCRUD { // REST
 
         dbClient.update(car);
         dbClient.shutdown();
-
-//        CouchDbClient dbClient = new CouchDbClient();
-//        Car car = getCarFromId(tagId);
-//
-//        try {
-//            List<PrivateSale> currentSales = car.getSales();
-//            currentSales.add(sale);
-//            car.setSales(currentSales);
-//        }
-//        catch (Exception e)
-//        {
-//            List<PrivateSale> newSales = new ArrayList<>();
-//            newSales.add(sale);
-//            car.setSales(newSales);
-//        }
-//
-//        dbClient.update(car);
-//        dbClient.shutdown();
     }
 
     public static void deleteCar(String id)

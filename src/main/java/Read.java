@@ -31,5 +31,4 @@ public class Read extends JFrame {
         frame.setSize(300, 300);
         frame.setVisible(true);
     }
-
 }

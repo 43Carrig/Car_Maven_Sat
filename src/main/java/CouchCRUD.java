@@ -98,82 +98,27 @@ public class CouchCRUD { // REST
     public static void simpleMapReduce(String dbName)
     {
         CouchDbClient dbClient = new CouchDbClient(dbName);
-        //Database db = dbSession.getDatabase(dbName);
 
-        Document doc = new Document();
+        /* MapReduce Design Document:
+        {
+          "_id": "_design/views",
+          "_rev": "4-f74a20be55243a45bb3b4e9f2a7f2433",
+          "views": {
+            "byCarMake": {
+              "map": "function(doc) {\r\n    emit(doc.carMake, 1);\r\n}",
+              "reduce": "_count"
+            },
+            "byCarName": {
+               "map": "function(doc)" {if('name' in doc) { emit (doc.name, doc._id); }}"
+            }
+          },
+          "language": "javascript"
+        }
+        */
 
+        List<JsonObject> allDocs = dbClient.view("views/byCarMake").reduce(true).group(true).query(JsonObject.class);
+        List<JsonObject> stuff = dbClient.view("views/byCarMake").includeDocs(true).key("Ford Fiesta XXX").query(JsonObject.class);
 
-        doc.setId("_design/mapReduceView12");
-
-        String str = "{\"get_\": {\"map\": \"function(doc) { if ('Hours' in doc && 'Car' in doc)" +
-                "emit(doc.Car, doc.Car) } \"}}";
-
-        //doc.put("views", str);
-        //doc.put(str);
-
-        MapReduce mapreduce = new MapReduce();
-        mapreduce.
-
-        //doc.addAttachment("views",str);
-
-
-
-
-        //db.saveDocument(doc);
-        dbClient.save(doc);
     }
-
-
-    public static void simpleMapReduceTry(String dbName)
-    {
-        CouchDbClient dbClient = new CouchDbClient();
-
-        DesignDocument designDocument = new DesignDocument();
-
-        designDocument.setId("_design/mapReduceView003");
-
-        String str = "{\"getCar\": {\"map\": \"function(doc) { if ('Cars' in doc && 'Car' in doc)" +
-                "emit(doc.Car, doc.Car) } \"}}";
-
-        Map<String, MapReduce> view = new HashMap<>();
-
-
-
-        //view.put();
-    }
-
-    public static void simpleMapReduceTryAgain(String dbName)
-    {
-
-        CouchDbClient dbClient = new CouchDbClient();
-
-        DesignDocument designDocument = new DesignDocument();
-        designDocument.setId("_design/mydesign");
-        //designDocument.setLanguage("javascript");
-
-        MapReduce mapreduce = new MapReduce();
-
-
-        mapreduce.set(
-                "function(doc) { "
-                        + "  emit(doc.seriesName, doc.season)"
-                        + "}");
-
-        mapreduce.setReduce(
-                "function (key, values, rereduce) {"
-                        + "return Math.max.apply({}, values)"
-                        + "}");
-
-        Map<String, MapReduce> view = new HashMap<>();
-        view.put("get_numberOfSeasons", mapreduce);
-
-        //designDocument.setViews(view);
-
-        dbClient.design().synchronizeWithDb(designDocument);
-
-        int count = dbClient.view("mydesign/get_numberOfSeasons").key("Arrow").queryForInt();
-    }
-
-
 
 }
